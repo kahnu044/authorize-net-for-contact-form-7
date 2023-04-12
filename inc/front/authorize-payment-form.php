@@ -38,7 +38,7 @@ function afcf7_tag_generator_block($contact_form, $args = '')
                             <label for="<?php echo esc_attr($args['content'] . '-name'); ?>"><?php echo esc_html(__('Name', 'contact-form-7-authorize-net-addon')); ?></label>
                         </th>
                         <td>
-                            <input type="text" name="name" class="tg-name oneline" id="<?php echo esc_attr($args['content'] . '-name'); ?>" />
+                            <input type="text" name="name" class="afcf7-name" id="<?php echo esc_attr($args['content'] . '-name'); ?>" />
                         </td>
                     </tr>
 
@@ -47,7 +47,7 @@ function afcf7_tag_generator_block($contact_form, $args = '')
                             <label for="<?php echo esc_attr($args['content'] . '-id'); ?>"><?php echo esc_html(__('Id attribute', 'contact-form-7')); ?></label>
                         </th>
                         <td>
-                            <input type="text" name="id" class="idvalue oneline option" id="<?php echo esc_attr($args['content'] . '-id'); ?>" />
+                            <input type="text" name="id" class="afcf7-class" id="<?php echo esc_attr($args['content'] . '-id'); ?>" />
                         </td>
                     </tr>
 
@@ -56,7 +56,7 @@ function afcf7_tag_generator_block($contact_form, $args = '')
                             <label for="<?php echo esc_attr($args['content'] . '-class'); ?>"><?php echo esc_html(__('Class attribute', 'contact-form-7')); ?></label>
                         </th>
                         <td>
-                            <input type="text" name="class" class="classvalue oneline option" id="<?php echo esc_attr($args['content'] . '-class'); ?>" />
+                            <input type="text" name="class" class="afcf7-id" id="<?php echo esc_attr($args['content'] . '-class'); ?>" />
                         </td>
                     </tr>
 
@@ -127,7 +127,7 @@ function wpcf7_add_form_tag_authorize_net($tag)
     $form_id = $form_instance->id();
 
     $use_authorize           = get_post_meta($form_id, AFCF7_META_PREFIX . 'use_authorize', true);
-    $mode_live            = get_post_meta($form_id, AFCF7_META_PREFIX . 'mode_live', true);
+    $mode_live               = get_post_meta($form_id, AFCF7_META_PREFIX . 'mode_live', true);
     $sandbox_login_id        = get_post_meta($form_id, AFCF7_META_PREFIX . 'sandbox_login_id', true);
     $sandbox_transaction_key = get_post_meta($form_id, AFCF7_META_PREFIX . 'sandbox_transaction_key', true);
     $live_login_id           = get_post_meta($form_id, AFCF7_META_PREFIX . 'live_login_id', true);
@@ -171,26 +171,26 @@ function wpcf7_add_form_tag_authorize_net($tag)
                 if ($found <= 1) {
 
                     echo    '<div class="cf7adn-form-code">
-									<div id="authorize-payment">
+								<div id="authorize-payment">
 
-											<label for="authorize_card_holder_name">Name on Card <span class="required">*</span></label>
-											<input type="text" id="authorize_card_holder_name" " name="' . $tag->basetype . '[card_holder_name]" size="20" class="' . $class . '" required placeholder="John Doe" onkeydown="return /[a-zA-Z ]/i.test(event.key)">
+									<label for="authorize_payment_card_holder_name">Name on Card <span class="required">*</span></label>
+									<input type="text" id="authorize_payment_card_holder_name" " name="' . $tag->basetype . '[card_holder_name]" size="20" class="' . $class . '" required placeholder="John Doe" onkeydown="return /[a-zA-Z ]/i.test(event.key)">
 
-											<label for="authorize_card_number">Credit card number <span class="required">*</span></label>
-											<input type="text" autocomplete="off" id="authorize_card_number" name="' . $tag->basetype . '[card_number]" data-authorize="number" class="credit-card ' . $class . '" maxlength="19" required placeholder="1111-2222-3333-4444" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength)">
+									<label for="authorize_payment_card_number">Credit card number <span class="required">*</span></label>
+									<input type="text" autocomplete="off" id="authorize_payment_card_number" name="' . $tag->basetype . '[card_number]" data-authorize="number" class="credit-card ' . $class . '"  required placeholder="1111-2222-3333-4444" >
 
-											<div class="authorize-row">
-												<div class="col-50">
-													<label for="authorize_expire">Exp Year <span class="required">*</span></label>
-													<input type="text" id="authorize_expire" name="' . $tag->basetype . '[expire]"  maxlength="5" placeholder="12/26" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength)">
-												</div>
-												<div class="col-50">
-													<label for="authorize_cvv">CVV <span class="required">*</span></label>
-													<input type="number" id="authorize_cvv" name="' . $tag->basetype . '[cvv_number]" data-authorize="cvc" class="' . $class . '" maxlength="4" placeholder="123" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength)">
-												</div>
-											</div>
+									<div class="authorize-row">
+										<div class="col-50">
+											<label for="authorize_payment_expire">Exp Year <span class="required">*</span></label>
+											<input type="text" id="authorize_payment_expire" name="' . $tag->basetype . '[expire]"  maxlength="5" placeholder="12/26" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength)">
+										</div>
+										<div class="col-50">
+											<label for="authorize_payment_cvv">CVV <span class="required">*</span></label>
+											<input type="number" id="authorize_payment_cvv" name="' . $tag->basetype . '[cvv_number]" data-authorize="cvc" class="' . $class . '" maxlength="4" placeholder="123" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength)">
+										</div>
 									</div>
-								</div>';
+								</div>
+							</div>';
                 }
 
                 break;
