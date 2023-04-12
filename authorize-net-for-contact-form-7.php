@@ -41,3 +41,5 @@ add_action('admin_enqueue_scripts', function () {
 require_once(AFCF7_PLUGIN_PATH . 'inc/admin/afcf7-authorize-setting-panel.php');
 
 require_once(AFCF7_PLUGIN_PATH . 'inc/front/authorize-payment-form.php');
+
+require_once(AFCF7_PLUGIN_PATH . 'lib/afcf7-authorize.php');
