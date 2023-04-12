@@ -12,6 +12,13 @@
 
 
 
+define('AFCF7_PLUGIN_PATH', plugin_dir_path(__FILE__));
+define('AFCF7_TEMPLATE_PATH', plugin_dir_path(__FILE__) . 'template/');
+define('AFCF7_PLUGIN_URL', plugins_url('', __FILE__));
+define('AFCF7_ASSETS_URL',  plugins_url('assets/', __FILE__));
+define('AFCF7_PLUGIN_VERSION',  '1.0.0');
+define('AFCF7_META_PREFIX', 'afcf7_' );
+
 /**
  * Adds custom panels to the Contact Form 7 form editor.
  *
@@ -42,5 +49,5 @@ function afcf7_register_panel($panels)
 function afcf7_additional_settings($cf7)
 {
 
-
+    require_once(AFCF7_TEMPLATE_PATH .'afcf7-panel-settings.php');
 }
