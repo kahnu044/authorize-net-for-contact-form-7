@@ -10,7 +10,6 @@
  * GitHub Plugin URI: https://github.com/kahnu044/authorize-net-for-contact-form-7
  */
 
-
 define('AFCF7_PLUGIN_PATH', plugin_dir_path(__FILE__));
 define('AFCF7_TEMPLATE_PATH', plugin_dir_path(__FILE__) . 'template/');
 define('AFCF7_PLUGIN_URL', plugins_url('', __FILE__));
@@ -38,35 +37,4 @@ add_action('admin_enqueue_scripts', function () {
 });
 
 
-/**
- * Adds custom panels to the Contact Form 7 form editor.
- *
- * @param array $panels An array of existing panels in the form editor.
- * @return array An array of modified panels that includes the custom panels.
- */
-
-add_filter('wpcf7_editor_panels', 'afcf7_register_panel');
-
-function afcf7_register_panel($panels)
-{
-
-    $panels['afcf7-settings-panel'] = array(
-        'title'    => __('Authorize.Net Settings', 'contact-form-7-authorize-net-addon'),
-        'callback' => 'afcf7_additional_settings',
-    );
-
-    return $panels;
-}
-
-
-/**
- * Adding Authorize.Net fields in Authorize.Net Settings tab
- *
- * @param $cf7
- */
-
-function afcf7_additional_settings($cf7)
-{
-
-    require_once(AFCF7_TEMPLATE_PATH . 'afcf7-panel-settings.php');
-}
+require_once(AFCF7_PLUGIN_PATH . 'inc/admin/afcf7-authorize-setting-panel.php');
