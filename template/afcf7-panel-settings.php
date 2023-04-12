@@ -7,7 +7,7 @@ if (empty($post_id)) {
     $post_id = $wpcf7->id();
 }
 
-/* Scan All Form Tags */
+/* Get All Form Tags */
 if ($post_id != "") {
     $afcf7_form = WPCF7_ContactForm::get_instance($post_id);
     $afcf7_all_tags = $afcf7_form->collect_mail_tags();
@@ -21,19 +21,14 @@ $sandbox_login_id        = get_post_meta( $post_id, AFCF7_META_PREFIX . 'sandbox
 $sandbox_transaction_key = get_post_meta( $post_id, AFCF7_META_PREFIX . 'sandbox_transaction_key', true );
 $live_login_id           = get_post_meta( $post_id, AFCF7_META_PREFIX . 'live_login_id', true );
 $live_transaction_key    = get_post_meta( $post_id, AFCF7_META_PREFIX . 'live_transaction_key', true );
-$amount                  = get_post_meta( $post_id, AFCF7_META_PREFIX . 'amount', true );
-$quantity                = get_post_meta( $post_id, AFCF7_META_PREFIX . 'quantity', true );
-$email                   = get_post_meta( $post_id, AFCF7_META_PREFIX . 'email', true );
-$description             = get_post_meta( $post_id, AFCF7_META_PREFIX . 'description', true );
-
-$success_returnURL       = get_post_meta( $post_id, AFCF7_META_PREFIX . 'success_returnurl', true );
-$cancel_returnURL        = get_post_meta( $post_id, AFCF7_META_PREFIX . 'cancel_returnurl', true );
-$message                 = get_post_meta( $post_id, AFCF7_META_PREFIX . 'message', true );
 
 $currency                = get_post_meta( $post_id, AFCF7_META_PREFIX . 'currency', true );
+$amount                  = get_post_meta( $post_id, AFCF7_META_PREFIX . 'amount', true );
+$email                   = get_post_meta( $post_id, AFCF7_META_PREFIX . 'email', true );
+$success_returnURL       = get_post_meta( $post_id, AFCF7_META_PREFIX . 'success_returnurl', true );
+$cancel_returnURL        = get_post_meta( $post_id, AFCF7_META_PREFIX . 'cancel_returnurl', true );
 
 $customer_details        = get_post_meta( $post_id, AFCF7_META_PREFIX . 'customer_details', true );
-
 $first_name              = get_post_meta( $post_id, AFCF7_META_PREFIX . 'first_name', true );
 $last_name               = get_post_meta( $post_id, AFCF7_META_PREFIX . 'last_name', true );
 $company_name            = get_post_meta( $post_id, AFCF7_META_PREFIX . 'company_name', true );
@@ -43,40 +38,22 @@ $state                   = get_post_meta( $post_id, AFCF7_META_PREFIX . 'state',
 $zip_code                = get_post_meta( $post_id, AFCF7_META_PREFIX . 'zip_code', true );
 $country                 = get_post_meta( $post_id, AFCF7_META_PREFIX . 'country', true );
 
-
-$use_authorize  = true;
-$mode_live = true;
-echo var_dump($mode_live);
 $currency_code = array(
     'AUD' => 'Australian Dollar',
-    'BRL' => 'Brazilian Real',
     'CAD' => 'Canadian Dollar',
-    'CZK' => 'Czech Koruna',
+    'CHF' => 'Swiss Franc',
     'DKK' => 'Danish Krone',
     'EUR' => 'Euro',
-    'HKD' => 'Hong Kong Dollar',
-    'HUF' => 'Hungarian Forint',
-    'ILS' => 'Israeli New Sheqel',
+    'GBP' => 'Pound Sterling',
     'JPY' => 'Japanese Yen',
-    'MYR' => 'Malaysian Ringgit',
-    'MXN' => 'Mexican Peso',
     'NOK' => 'Norwegian Krone',
     'NZD' => 'New Zealand Dollar',
-    'PHP' => 'Philippine Peso',
-    'PLN' => 'Polish Zloty',
-    'GBP' => 'Pound Sterling',
-    'RUB' => 'Russian Ruble',
-    'SGD' => 'Singapore Dollar',
     'SEK' => 'Swedish Krona',
-    'CHF' => 'Swiss Franc',
-    'TWD' => 'Taiwan New Dollar',
-    'THB' => 'Thai Baht',
-    'TRY' => 'Turkish Lira',
-    'USD' => 'U.S. Dollar'
+    'USD' => 'U.S. Dollar',
+    'ZAR' => 'South African Rand'
 );
 
 $selected = '';
-
 
 $args = array(
     'post_type'      => array('page'),
@@ -126,7 +103,7 @@ wp_enqueue_script('wp-pointer');
 <?php
 
 
-echo '<div class="afcf7-settings">' .
+echo'<div class="afcf7-settings">' .
 	'<div class="afcf7-left-box postbox">' .
 		'<input style="display: none;" id="' . AFCF7_META_PREFIX . 'customer_details" name="' . AFCF7_META_PREFIX . 'customer_details" type="checkbox" value="1" ' . checked( $customer_details, 1, false ) . ' />' .
 		'<table class="form-table">' .
@@ -136,7 +113,7 @@ echo '<div class="afcf7-settings">' .
 						'<label for="' . AFCF7_META_PREFIX . 'use_authorize">' .
 							__( 'Enable Authorize.Net Payment Form', 'contact-form-7-authorize-net-addon' ) .
 						'</label>' .
-						'<span class="afcf7-tooltip" id="afcf7enable-authorizenet-payment-form"></span>' .
+						'<span class="afcf7-tooltip" id="afcf7-enable-authorizenet-payment-form"></span>' .
 					'</th>' .
 					'<td>' .
 						'<input id="' . AFCF7_META_PREFIX . 'use_authorize" name="' . AFCF7_META_PREFIX . 'use_authorize" type="checkbox" class="enable_required" value="1" ' . checked( $use_authorize, 1, false ) . '/>' .
@@ -147,7 +124,7 @@ echo '<div class="afcf7-settings">' .
 						'<label for="' . AFCF7_META_PREFIX . 'mode_live">' .
 							__( 'Enable Live API Mode', 'contact-form-7-authorize-net-addon' ) .
 						'</label>' .
-						'<span class="afcf7-tooltip" id="afcf7enable-live-api-mode"></span>' .
+						'<span class="afcf7-tooltip" id="afcf7-enable-live-api-mode"></span>' .
 					'</th>' .
 					'<td>' .
 						'<input id="' . AFCF7_META_PREFIX . 'mode_live" name="' . AFCF7_META_PREFIX . 'mode_live" type="checkbox" value="1" ' . checked( $mode_live, 1, false ) . ' />' .
@@ -158,7 +135,7 @@ echo '<div class="afcf7-settings">' .
 						'<label for="' . AFCF7_META_PREFIX . 'debug">' .
 							__( 'Enable Debug Mode', 'contact-form-7-authorize-net-addon' ) .
 						'</label>' .
-						'<span class="afcf7-tooltip" id="afcf7enable-debug-mode"></span>' .
+						'<span class="afcf7-tooltip" id="afcf7-enable-debug-mode"></span>' .
 					'</th>' .
 					'<td>' .
 						'<input id="' . AFCF7_META_PREFIX . 'debug" name="' . AFCF7_META_PREFIX . 'debug" type="checkbox" value="1" ' . checked( $debug_authorize, 1, false ) . '/>' .
@@ -177,7 +154,7 @@ echo '<div class="afcf7-settings">' .
 						'<label for="' . AFCF7_META_PREFIX . 'sandbox_login_id">' .
 							__( 'Sandbox Login ID (required)', 'contact-form-7-authorize-net-addon' ) .
 						'</label>' .
-						'<span class="afcf7-tooltip" id="afcf7sandbox-login-id"></span>' .
+						'<span class="afcf7-tooltip" id="afcf7-sandbox-login-id"></span>' .
 					'</th>' .
 					'<td>' .
 						'<input id="' . AFCF7_META_PREFIX . 'sandbox_login_id" name="' . AFCF7_META_PREFIX . 'sandbox_login_id" type="text" class="large-text form-required-fields" value="' . esc_attr( $sandbox_login_id ) . '" ' . ( empty( $mode_live ) && !empty( $use_authorize ) ? 'required' : '' ) . '  />' .
@@ -188,7 +165,7 @@ echo '<div class="afcf7-settings">' .
 						'<label for="' . AFCF7_META_PREFIX . 'sandbox_transaction_key">' .
 							__( 'Sandbox Transaction Key (required)', 'contact-form-7-authorize-net-addon' ) .
 						'</label>' .
-						'<span class="afcf7-tooltip" id="afcf7sandbox-transaction-key"></span>' .
+						'<span class="afcf7-tooltip" id="afcf7-sandbox-transaction-key"></span>' .
 					'</th>' .
 					'<td>' .
 						'<input id="' . AFCF7_META_PREFIX . 'sandbox_transaction_key" name="' . AFCF7_META_PREFIX . 'sandbox_transaction_key" type="text" class="large-text form-required-fields" value="' . esc_attr( $sandbox_transaction_key ) . '"  ' . ( empty( $mode_live ) && !empty( $use_authorize ) ? 'required' : '' ) . '  />' .
@@ -199,7 +176,7 @@ echo '<div class="afcf7-settings">' .
 						'<label for="' . AFCF7_META_PREFIX . 'live_login_id">' .
 							__( 'Live Login ID (required)', 'contact-form-7-authorize-net-addon' ) .
 						'</label>' .
-						'<span class="afcf7-tooltip" id="afcf7live-login-id"></span>' .
+						'<span class="afcf7-tooltip" id="afcf7-live-login-id"></span>' .
 					'</th>' .
 					'<td>' .
 						'<input id="' . AFCF7_META_PREFIX . 'live_login_id" name="' . AFCF7_META_PREFIX . 'live_login_id" type="text" class="large-text form-required-fields" value="' . esc_attr( $live_login_id ) . '" ' . ( !empty( $mode_live ) && !empty( $use_authorize ) ? 'required' : '' ) . '/>' .
@@ -210,7 +187,7 @@ echo '<div class="afcf7-settings">' .
 						'<label for="' . AFCF7_META_PREFIX . 'live_transaction_key">' .
 							__( 'Live Transaction Key (required)', 'contact-form-7-authorize-net-addon' ) .
 						'</label>' .
-						'<span class="afcf7-tooltip" id="afcf7live-transaction-key"></span>' .
+						'<span class="afcf7-tooltip" id="afcf7-live-transaction-key"></span>' .
 					'</th>' .
 					'<td>' .
 						'<input id="' . AFCF7_META_PREFIX . 'live_transaction_key" name="' . AFCF7_META_PREFIX . 'live_transaction_key" type="text" class="large-text form-required-fields" value="' . esc_attr( $live_transaction_key ) . '" ' . ( !empty( $mode_live ) && !empty( $use_authorize ) ? 'required' : '' ) . '/>' .
@@ -221,7 +198,7 @@ echo '<div class="afcf7-settings">' .
                         '<label for="' . AFCF7_META_PREFIX . 'currency">' .
                             __( 'Select Currency (required)', 'contact-form-7-authorize-net-addon' ) .
                         '</label>' .
-                        '<span class="afcf7-tooltip" id="afcf7select-currency"></span>' .
+                        '<span class="afcf7-tooltip" id="afcf7-select-currency"></span>' .
                     '</th>' .
                     '<td>' .
                         '<select id="' . AFCF7_META_PREFIX . 'currency" name="' . AFCF7_META_PREFIX . 'currency" ' . ( !empty( $use_authorize ) ? 'required' : '' ) . '>';
@@ -240,7 +217,7 @@ echo '<div class="afcf7-settings">' .
 						'<label for="' . AFCF7_META_PREFIX . 'amount">' .
 							__( 'Amount Field Name (required)', 'contact-form-7-authorize-net-addon' ) .
 						'</label>' .
-						'<span class="afcf7-tooltip" id="afcf7amount-field"></span>' .
+						'<span class="afcf7-tooltip" id="afcf7-amount-field"></span>' .
 					'</th>' .
 					'<td>' .
 						'<select id="' . AFCF7_META_PREFIX . 'amount" class="form-required-fields" name="' . AFCF7_META_PREFIX . 'amount" ' . ( !empty( $use_authorize ) ? 'required' : '' ) . '>';
@@ -259,7 +236,7 @@ echo '<div class="afcf7-settings">' .
 						'<label for="' . AFCF7_META_PREFIX . 'email">' .
 							__( 'Customer Email Field Name (Optional)', 'contact-form-7-authorize-net-addon' ) .
 						'</label>' .
-						'<span class="afcf7-tooltip" id="afcf7customer-email-field-name"></span>' .
+						'<span class="afcf7-tooltip" id="afcf7-customer-email-field-name"></span>' .
 					'</th>' .
 					'<td>' .
 						'<select id="' . AFCF7_META_PREFIX . 'email" name="' . AFCF7_META_PREFIX . 'email">';
@@ -273,13 +250,12 @@ echo '<div class="afcf7-settings">' .
 					'</td>' .
 				'</tr>' .
 
-
 				'<tr class="form-field">' .
 					'<th>' .
 						'<label for="' . AFCF7_META_PREFIX . 'success_returnurl">' .
 							__( 'Success Return URL (Optional)', 'contact-form-7-authorize-net-addon' ) .
 						'</label>' .
-						'<span class="afcf7-tooltip" id="afcf7success-return-url"></span>' .
+						'<span class="afcf7-tooltip" id="afcf7-success-return-url"></span>' .
 					'</th>' .
 					'<td>' .
 						'<select id="' . AFCF7_META_PREFIX . 'success_returnurl" name="' . AFCF7_META_PREFIX . 'success_returnurl">' .
@@ -299,7 +275,7 @@ echo '<div class="afcf7-settings">' .
 						'<label for="' . AFCF7_META_PREFIX . 'cancel_returnurl">' .
 							__( 'Cancel Return URL (Optional)', 'contact-form-7-authorize-net-addon' ) .
 						'</label>' .
-						'<span class="afcf7-tooltip" id="afcf7cancel-return-url"></span>' .
+						'<span class="afcf7-tooltip" id="afcf7-amount-return-url"></span>' .
 					'</th>' .
 					'<td>' .
 						'<select id="' . AFCF7_META_PREFIX . 'cancel_returnurl" name="' . AFCF7_META_PREFIX . 'cancel_returnurl">' .
@@ -420,208 +396,174 @@ echo '<div class="afcf7-settings">' .
 
 '</div>';
 
-
-
 add_action('admin_print_footer_scripts', function () {
     ob_start();
 ?>
     <script type="text/javascript">
         jQuery(document).ready(function($) {
-            jQuery('#afcf7enable-authorizenet-payment-form').on('mouseenter click', function() {
+            jQuery('#afcf7-enable-authorizenet-payment-form').on('mouseenter click', function() {
                 jQuery('body .wp-pointer-buttons .close').trigger('click');
-                jQuery('#afcf7enable-authorizenet-payment-form').pointer({
-                    pointerClass: 'wp-pointer afcf7pointer',
+                jQuery('#afcf7-enable-authorizenet-payment-form').pointer({
+                    pointerClass: 'wp-pointer afcf7-pointer',
                     content: '<?php
                                 _e(
                                     '<h3>Enable Authorize.Net Payment</h3>' .
-                                        '<p>To make enable Authorize.Net Payment with this Form.</p>',
+                                    '<p>To make enable Authorize.Net Payment with this Form.</p>',
                                     'contact-form-7-authorize-net-addon'
                                 ); ?>',
-                    position: 'left center',
+                    position: 'left center'
                 }).pointer('open');
             });
-            //jQuery selector to point to
-            jQuery('#afcf7enable-live-api-mode').on('mouseenter click', function() {
+
+            jQuery('#afcf7-enable-live-api-mode').on('mouseenter click', function() {
                 jQuery('body .wp-pointer-buttons .close').trigger('click');
-                jQuery('#afcf7enable-live-api-mode').pointer({
-                    pointerClass: 'wp-pointer afcf7pointer',
+                jQuery('#afcf7-enable-live-api-mode').pointer({
+                    pointerClass: 'wp-pointer afcf7-pointer',
                     content: '<?php
                                 _e(
-                                    '<h3>Sandbox mode</h3>' .
-                                        '<p>Check the Authorize.Net testing guide <a href="https://developer.authorize.net/hello_world/testing_guide/" target="_blank">here</a>.This will display "sandbox mode" warning on checkout.</p>',
+                                    '<h3>Live mode</h3>' .
+                                    '<p>It will enable the <strong>LIVE MODE</strong> of the authorize.net. If it is not checked then the default is <strong>sandbox mode</strong></p>',
                                     'contact-form-7-authorize-net-addon'
                                 ); ?>',
                     position: 'left center',
                 }).pointer('open');
             });
 
-            jQuery('#afcf7enable-debug-mode').on('mouseenter click', function() {
+            jQuery('#afcf7-enable-debug-mode').on('mouseenter click', function() {
                 jQuery('body .wp-pointer-buttons .close').trigger('click');
-                jQuery('#afcf7enable-debug-mode').pointer({
-                    pointerClass: 'wp-pointer afcf7pointer',
+                jQuery('#afcf7-enable-debug-mode').pointer({
+                    pointerClass: 'wp-pointer afcf7-pointer',
                     content: '<?php
                                 _e(
-                                    '<h3>Debug mode</h3>' .
-                                        '<p>From this we can get the whole response of Payment Gateway and display in each Entry detail Page.</p>',
+                                    '<h3>Debug Log Mode</h3>' .
+                                    '<p>It will log the whole response of the payment gateway API</p>',
                                     'contact-form-7-authorize-net-addon'
                                 ); ?>',
                     position: 'left center',
                 }).pointer('open');
             });
 
-
-            jQuery('#afcf7sandbox-login-id').on('mouseenter click', function() {
+            jQuery('#afcf7-sandbox-login-id').on('mouseenter click', function() {
                 jQuery('body .wp-pointer-buttons .close').trigger('click');
-                jQuery('#afcf7sandbox-login-id').pointer({
-                    pointerClass: 'wp-pointer afcf7pointer',
+                jQuery('#afcf7-sandbox-login-id').pointer({
+                    pointerClass: 'wp-pointer afcf7-pointer',
                     content: '<?php
                                 _e(
                                     '<h3>Get Your Sandbox Login ID</h3>' .
-                                        '<p>Get it from <a href="https://sandbox.authorize.net" target="_blank"> Sandbox Authorize.net</a> then <strong> Account > Security Settings > API  Credentials & Keys </strong> page  in your Authorize.Net account.</p>',
+                                        '<p>Find the details at <strong> Account > Security Settings > API  Credentials & Keys </strong> page  in your Authorize.Net account.</p>',
                                     'contact-form-7-authorize-net-addon'
                                 ); ?>',
                     position: 'left center',
                 }).pointer('open');
             });
 
-            jQuery('#afcf7sandbox-transaction-key').on('mouseenter click', function() {
+            jQuery('#afcf7-sandbox-transaction-key').on('mouseenter click', function() {
                 jQuery('body .wp-pointer-buttons .close').trigger('click');
-                jQuery('#afcf7sandbox-transaction-key').pointer({
-                    pointerClass: 'wp-pointer afcf7pointer',
+                jQuery('#afcf7-sandbox-transaction-key').pointer({
+                    pointerClass: 'wp-pointer afcf7-pointer',
                     content: '<?php
                                 _e(
                                     '<h3>Get Your Sandbox Transaction Key</h3>' .
-                                        '<p>Get it from <a href="https://sandbox.authorize.net" target="_blank"> Sandbox Authorize.net</a> then <strong>Account > Security Settings > API Credentials & Keys </strong> page in your Authorize.Net account. For security reasons, you cannot view your Transaction Key, but you will be able to generate a new one. </p>',
+                                        '<p>Find the details at <strong>Account > Security Settings > API Credentials & Keys </strong> page in your Authorize.Net account. For security reasons, you cannot view your Transaction Key, but you will be able to generate a new one. </p>',
                                     'contact-form-7-authorize-net-addon'
                                 ); ?>',
                     position: 'left center',
                 }).pointer('open');
             });
 
-            jQuery('#afcf7live-login-id').on('mouseenter click', function() {
+            jQuery('#afcf7-live-login-id').on('mouseenter click', function() {
                 jQuery('body .wp-pointer-buttons .close').trigger('click');
-                jQuery('#afcf7live-login-id').pointer({
-                    pointerClass: 'wp-pointer afcf7pointer',
+                jQuery('#afcf7-live-login-id').pointer({
+                    pointerClass: 'wp-pointer afcf7-pointer',
                     content: '<?php
                                 _e(
                                     '<h3>Get Your Live Login ID</h3>' .
-                                        '<p>Get it from <a href="https://account.authorize.net" target="_blank">Authorize.net</a> then <strong>Account > Security Settings > API Credentials & Keys </strong> page  in your Authorize.Net account.</p>',
+                                        '<p>Find the details at <strong>Account > Security Settings > API Credentials & Keys </strong> page  in your Authorize.Net account.</p>',
                                     'contact-form-7-authorize-net-addon'
                                 ); ?>',
                     position: 'left center',
                 }).pointer('open');
             });
 
-            jQuery('#afcf7live-transaction-key').on('mouseenter click', function() {
+            jQuery('#afcf7-live-transaction-key').on('mouseenter click', function() {
                 jQuery('body .wp-pointer-buttons .close').trigger('click');
-                jQuery('#afcf7live-transaction-key').pointer({
-                    pointerClass: 'wp-pointer afcf7pointer',
+                jQuery('#afcf7-live-transaction-key').pointer({
+                    pointerClass: 'wp-pointer afcf7-pointer',
                     content: '<?php
                                 _e(
                                     '<h3>Get Your Live Transaction Key</h3>' .
-                                        '<p>Get it from <a href="https://account.authorize.net" target="_blank">Authorize.net</a> then <strong> Account > Security Settings > API Credentials & Keys </strong> page in your Authorize.Net account. For security reasons, you cannot view your Transaction Key, but you will be able to generate a new one. </p>',
+                                    '<p>Find the details at <strong> Account > Security Settings > API Credentials & Keys </strong> page in your Authorize.Net account. For security reasons, you cannot view your Transaction Key, but you will be able to generate a new one. </p>',
                                     'contact-form-7-authorize-net-addon'
                                 ); ?>',
                     position: 'left center',
                 }).pointer('open');
             });
 
-            jQuery('#afcf7amount-field').on('mouseenter click', function() {
+            jQuery('#afcf7-select-currency').on('mouseenter click', function() {
                 jQuery('body .wp-pointer-buttons .close').trigger('click');
-                jQuery('#afcf7amount-field').pointer({
-                    pointerClass: 'wp-pointer afcf7pointer',
+                jQuery('#afcf7-select-currency').pointer({
+                    pointerClass: 'wp-pointer afcf7-pointer',
                     content: '<?php
                                 _e(
-                                    '<h3>Add Amount Name</h3>' .
-                                        '<p>Add here the Name of amount field created in Form. Its required because payment will capture payble amount from this field.</p>' .
-                                        '<p><strong><span style="color:red">Note:</span> Save the FORM details to view the list of fields.</strong></p>',
+                                    '<h3>Select Currency</h3>' .
+                                    '<p>Select the currency type, which you are going to use in authorize.net merchant account.<br/><strong>Note:</strong>Authorize.net dont provide multiple currencies for single account</p>',
                                     'contact-form-7-authorize-net-addon'
                                 ); ?>',
                     position: 'left center',
                 }).pointer('open');
             });
 
-            jQuery('#afcf7quantity-field-name').on('mouseenter click', function() {
+            jQuery('#afcf7-amount-field').on('mouseenter click', function() {
                 jQuery('body .wp-pointer-buttons .close').trigger('click');
-                jQuery('#afcf7quantity-field-name').pointer({
-                    pointerClass: 'wp-pointer afcf7pointer',
+                jQuery('#afcf7-amount-field').pointer({
+                    pointerClass: 'wp-pointer afcf7-pointer',
                     content: '<?php
                                 _e(
-                                    '<h3>Add Quantity Field Name</h3>' .
-                                        '<p>Add here the Name of quantity field created in Form.</p>' .
-                                        '<p><strong><span style="color:red">Note:</span> Save the FORM details to view the list of fields.</strong></p>',
+                                    '<h3>Select amount field</h3>' .
+                                    '<p>Add here the Name of amount field created in the Form. Its required because payment will capture payble amount from this field.</p>',
                                     'contact-form-7-authorize-net-addon'
                                 ); ?>',
                     position: 'left center',
                 }).pointer('open');
             });
 
-            jQuery('#afcf7customer-email-field-name').on('mouseenter click', function() {
+            jQuery('#afcf7-customer-email-field-name').on('mouseenter click', function() {
                 jQuery('body .wp-pointer-buttons .close').trigger('click');
-                jQuery('#afcf7customer-email-field-name').pointer({
-                    pointerClass: 'wp-pointer afcf7pointer',
+                jQuery('#afcf7-customer-email-field-name').pointer({
+                    pointerClass: 'wp-pointer afcf7-pointer',
                     content: '<?php
                                 _e(
                                     '<h3>Add Customer Email Field Name</h3>' .
                                         '<p>Add here the Name of customer email field created in Form.</p>' .
-                                        '<p><strong><span style="color:red">Note:</span> Save the FORM details to view the list of fields.</strong></p>',
+                                        '<p>If you have email field in your form then select that form field name</p>',
                                     'contact-form-7-authorize-net-addon'
                                 ); ?>',
                     position: 'left center',
                 }).pointer('open');
             });
 
-            jQuery('#afcf7description-field-name').on('mouseenter click', function() {
+            jQuery('#afcf7-success-return-url').on('mouseenter click', function() {
                 jQuery('body .wp-pointer-buttons .close').trigger('click');
-                jQuery('#afcf7description-field-name').pointer({
-                    pointerClass: 'wp-pointer afcf7pointer',
-                    content: '<?php
-                                _e(
-                                    '<h3>Add Description Field Name</h3>' .
-                                        '<p>Add here the Name of description field created in Form.</p>' .
-                                        '<p><strong><span style="color:red">Note:</span> Save the FORM details to view the list of fields.</strong></p>',
-                                    'contact-form-7-authorize-net-addon'
-                                ); ?>',
-                    position: 'left center',
-                }).pointer('open');
-            });
-
-            jQuery('#afcf7select-currency').on('mouseenter click', function() {
-                jQuery('body .wp-pointer-buttons .close').trigger('click');
-                jQuery('#afcf7select-currency').pointer({
-                    pointerClass: 'wp-pointer afcf7pointer',
-                    content: '<?php
-                                _e(
-                                    '<h3>Select Currency</h3>' .
-                                        '<p>Select the currency which is selected from your authorize.net merchant account.<br/><strong>Note:</strong>Authorize.net dont provide multiple currencies for single account</p>',
-                                    'contact-form-7-authorize-net-addon'
-                                ); ?>',
-                    position: 'left center',
-                }).pointer('open');
-            });
-
-            jQuery('#afcf7cancel-return-url').on('mouseenter click', function() {
-                jQuery('body .wp-pointer-buttons .close').trigger('click');
-                jQuery('#afcf7cancel-return-url').pointer({
-                    pointerClass: 'wp-pointer afcf7pointer',
-                    content: '<?php
-                                _e(
-                                    '<h3>Select Cancel Page URL</h3>' .
-                                        '<p>Here is the list of all your WP pages. You need to create your Cancel Page and select that page from this dropdown. So, when any payment will canceled then on return it will redirect on this Cancel Page.</p>',
-                                    'contact-form-7-authorize-net-addon'
-                                ); ?>',
-                    position: 'left center',
-                }).pointer('open');
-            });
-
-            jQuery('#afcf7success-return-url').on('mouseenter click', function() {
-                jQuery('body .wp-pointer-buttons .close').trigger('click');
-                jQuery('#afcf7success-return-url').pointer({
-                    pointerClass: 'wp-pointer afcf7pointer',
+                jQuery('#afcf7-success-return-url').pointer({
+                    pointerClass: 'wp-pointer afcf7-pointer',
                     content: '<?php
                                 _e(
                                     '<h3>Select Success Page URL</h3>' .
-                                        '<p>Here is the list of all your WP pages. You need to create your Success Page and select that page from this dropdown. <br/>So, when any payment will successfully done then on return it will redirect on this Success Page.<br/> On success Page you can use our shortcode <b>[authorize-details]</b> to show transaction detail.</p>',
+                                    '<p>When any payment will successfully done then on return it will redirect on this Success Page.<br/> On success Page you can use our shortcode <b>[afcf7-success-response]</b> to show transaction detail.</p>',
+                                    'contact-form-7-authorize-net-addon'
+                                ); ?>',
+                    position: 'left center',
+                }).pointer('open');
+            });
+
+            jQuery('#afcf7-amount-return-url').on('mouseenter click', function() {
+                jQuery('body .wp-pointer-buttons .close').trigger('click');
+                jQuery('#afcf7-amount-return-url').pointer({
+                    pointerClass: 'wp-pointer afcf7-pointer',
+                    content: '<?php
+                                _e(
+                                    '<h3>Select Cancel Page URL</h3>' .
+                                    '<p>When any payment will canceled then on return it will redirect on this Cancel Page.</p>',
                                     'contact-form-7-authorize-net-addon'
                                 ); ?>',
                     position: 'left center',
