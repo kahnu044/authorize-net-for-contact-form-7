@@ -32,7 +32,7 @@
 #authorize-payment input[type=text],
 #authorize-payment input[type=number] {
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     padding: 6px 12px;
     border: 1px solid #ccc;
     border-radius: 3px;

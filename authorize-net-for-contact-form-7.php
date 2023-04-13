@@ -22,9 +22,9 @@ define('AFCF7_META_PREFIX', 'afcf7_');
  */
 
 add_action('wp_enqueue_scripts', function () {
-    wp_enqueue_style('afcf7-styles', AFCF7_ASSETS_URL . 'css/style.css', array(), AFCF7_PLUGIN_VERSION, 'all');
+    wp_enqueue_style('afcf7-styles', AFCF7_ASSETS_URL . 'css/style.css', array(), time(), 'all');
     wp_enqueue_style('afcf7-authorize-styles', AFCF7_ASSETS_URL . 'css/payment-form.css', array(), AFCF7_PLUGIN_VERSION, 'all');
-    wp_enqueue_script('afcf7-script', AFCF7_ASSETS_URL . 'js/script.js', array('jquery'), AFCF7_PLUGIN_VERSION, true);
+    wp_enqueue_script('afcf7-script', AFCF7_ASSETS_URL . 'js/script.js', array('jquery'), time(), true);
 });
 
 
